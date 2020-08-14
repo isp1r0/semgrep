@@ -150,7 +150,7 @@ jobs:
           # cat timing.txt
           # cat timing.log
       - name: Uninstall semgrep 0.9.0
-        run: pip3 uninstall semgrep
+        run: pip3 uninstall -y semgrep
       # - name: Download Artifact
       #   uses: actions/download-artifact@v1
       #   with:
