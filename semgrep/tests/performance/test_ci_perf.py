@@ -79,27 +79,37 @@ def _github_repo(repo_url: str, sha: Optional[str], repo_destination: Path):
     if not repo_destination.exists():
         if sha is None:
             subprocess.check_output(
-                ["git", "clone", "--depth=1", repo_url, repo_destination]
+                ["git", "clone", "--depth=1", repo_url, repo_destination],
+                stderr=subprocess.STDOUT,
             )
         else:
             repo_destination.mkdir()
             # Sadly, no fast way to clone a specific commit without a super
             # modern git client
-            subprocess.check_output(["git", "clone", repo_url, repo_destination])
+            subprocess.check_output(
+                ["git", "clone", repo_url, repo_destination], stderr=subprocess.STDOUT
+            )
             with chdir(repo_destination):
-                subprocess.check_output(["git", "checkout", sha])
+                subprocess.check_output(
+                    ["git", "checkout", sha], stderr=subprocess.STDOUT
+                )
 
     # validate that the repo seems setup properly
     with chdir(repo_destination):
         # some tests modify it, lets put everything back to normal
-        subprocess.check_output(["git", "clean", "-fd"])
-        subprocess.check_output(["git", "reset", "--hard"])
+        subprocess.check_output(["git", "clean", "-fd"], stderr=subprocess.STDOUT)
+        subprocess.check_output(["git", "reset", "--hard"], stderr=subprocess.STDOUT)
         all_clean = (
-            subprocess.check_output(["git", "status", "--porcelain"]).strip() == b""
+            subprocess.check_output(
+                ["git", "status", "--porcelain"], stderr=subprocess.DEVNULL
+            ).strip()
+            == b""
         )
         if not all_clean:
             raise GitError("Couldn't clean the repo, something is wrong. Deleting.")
-        repo_sha = subprocess.check_output(["git", "rev-parse", "HEAD"])
+        repo_sha = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], stderr=subprocess.STDOUT
+        )
         if sha:
             if not repo_sha.startswith(sha.encode("utf-8")):
                 shutil.rmtree(repo_destination)
@@ -127,7 +137,7 @@ def test_perf():
     start = time.time()
     subprocess.check_output(
         ["python3", "-m", "semgrep", "--config", str(rules_path), str(target_path)],
-        stderr=subprocess.STDOUT,
+        # stderr=subprocess.STDOUT,
     )
     duration = time.time() - start
     print(duration)
@@ -151,7 +161,7 @@ def test_perf():
             "three.js",
             str(target_path),
         ],
-        stderr=subprocess.STDOUT,
+        # stderr=subprocess.STDOUT,
     )
     duration = time.time() - start
     print(duration)
