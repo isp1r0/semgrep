@@ -136,7 +136,7 @@ def test_perf():
     )
     start = time.time()
     subprocess.check_output(
-        ["python3", "-m", "semgrep", "--config", str(rules_path), str(target_path)],
+        ["semgrep", "--config", str(rules_path), str(target_path)],
         # stderr=subprocess.STDOUT,
     )
     duration = time.time() - start
@@ -152,8 +152,6 @@ def test_perf():
     start = time.time()
     subprocess.check_output(
         [
-            "python3",
-            "-m",
             "semgrep",
             "--config",
             str(rules_path / "njsscan/rules/semantic_grep"),
