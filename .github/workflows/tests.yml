@@ -146,7 +146,7 @@ jobs:
       - name: Run 0.9.0 Timing Benchmark
         run: |
           export PATH=/github/home/.local/bin:$PATH
-          cd semgrep && pytest tests/performance/test_ci_perf.py
+          cd semgrep && python3 tests/performance/test_ci_perf.py
           # cat timing.txt
           # cat timing.log
       - name: Uninstall semgrep 0.9.0
