@@ -9,7 +9,7 @@ from typing import List
 from typing import Optional
 from typing import Union
 
-import appdirs
+# import appdirs
 
 # import pytest
 
@@ -26,11 +26,11 @@ import appdirs
 #     """
 #     yield _github_repo_retry_wrapper
 
-REPO_CACHE = Path(
-    os.path.expanduser(
-        os.environ.get("GITHUB_REPO_CACHE", appdirs.user_cache_dir("semgrep-tests"))
-    )
-)
+# REPO_CACHE = Path(
+#     os.path.expanduser(
+#         os.environ.get("GITHUB_REPO_CACHE", appdirs.user_cache_dir("semgrep-tests"))
+#     )
+# )
 
 
 @contextlib.contextmanager
@@ -52,7 +52,7 @@ def clone_github_repo(repo_url: str, sha: Optional[str] = None, retries: int = 3
     """
     sha_str = sha or "latest"
     repo_dir = "-".join(repo_url.split("/")[-2:]) + "-" + sha_str
-    repo_destination = REPO_CACHE / repo_dir
+    repo_destination = Path(repo_dir)
     try:
         return _github_repo(repo_url, sha, repo_destination)
     except (GitError, subprocess.CalledProcessError) as ex:

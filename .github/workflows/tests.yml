@@ -141,13 +141,8 @@ jobs:
         with:
           path: ~/.cache/semgrep-cache
           key: semgrep-repo-cache-test
-      - name: create cache dir if not exists
-        run: mkdir -p ~/.cache/semgrep-cache
-      - run: touch ~/.cache/semgrep-cache/ok
       - name: Install semgrep 0.9.0
         run: |
-          pip3 install pytest
-          pip3 install appdirs
           pip3 install semgrep==0.9.0
           semgrep --version
       - name: Run 0.9.0 Timing Benchmark
