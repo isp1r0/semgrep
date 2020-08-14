@@ -144,6 +144,7 @@ jobs:
           semgrep --version
       - name: Run 0.9.0 Timing Benchmark
         run: |
+          export PATH=/github/home/.local/bin:$PATH
           cd semgrep && pytest tests/performance/test_ci_perf.py > timing.txt 2> timing.log
           cat timing.txt
           cat timing.log
