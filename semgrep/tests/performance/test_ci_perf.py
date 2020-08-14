@@ -21,7 +21,8 @@ def test_perf(clone_github_repo):
     )
     start = time.time()
     subprocess.check_output(
-        ["python3", "-m" "semgrep", "--config", str(rules_path), str(target_path)]
+        ["python3", "-m" "semgrep", "--config", str(rules_path), str(target_path)],
+        stderr=subprocess.STDOUT,
     )
     duration = time.time() - start
     print(duration)
@@ -43,7 +44,8 @@ def test_perf(clone_github_repo):
             "--exclude",
             "three.js",
             str(target_path),
-        ]
+        ],
+        stderr=subprocess.STDOUT,
     )
     duration = time.time() - start
     print(duration)
